@@ -13,6 +13,10 @@ class Settings(BaseSettings):
     
     # データベース設定
     DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/myorder")
+    DB_USER: str = os.getenv("DB_USER", "postgres")
+    DB_PASSWORD: str = os.getenv("DB_PASSWORD", "postgres")
+    DB_NAME: str = os.getenv("DB_NAME", "myorder")
+    DOMAIN: str = os.getenv("DOMAIN", "localhost")
     
     # JWT認証設定
     SECRET_KEY: str = os.getenv("SECRET_KEY", "your-secret-key-here")
@@ -30,5 +34,6 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = True
+        extra = "allow"  # 追加の環境変数を許可
 
 settings = Settings() 

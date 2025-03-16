@@ -20,17 +20,15 @@ import os
 import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from app.database import Base
-from app.models import *  # noqa
+from app.core.config import settings
+from app.db.base import Base
+
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
-
-# Import settings for DB connection
-from app.core.config import settings
 
 def get_url():
     return settings.DATABASE_URL

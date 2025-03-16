@@ -11,6 +11,11 @@ from app.models.customer import Customer
 from app.models.item import Item
 from app.models.order import Order, OrderStatus
 from app.core.security import get_password_hash
+from app.db import base  # noqa: F401
+from app.db.base_class import Base
+from app.db.session import engine
+# make sure all SQL Alchemy models are imported (app.db.base) before initializing DB
+# otherwise, SQL Alchemy might fail to initialize relationships properly
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -36,7 +41,6 @@ def init_db(db: Session) -> None:
         # SQLを実行
         db.execute(text(sql))
         db.commit()
-        
         logger.info("テーブルの作成が完了しました")
         
         # 初期管理者ユーザーの作成
@@ -106,6 +110,7 @@ def init_db(db: Session) -> None:
                 db.add(item)
             
             db.commit()
+            logger.info("サンプルデータの作成が完了しました")
         
     except Exception as e:
         logger.error(f"データベースの初期化中にエラーが発生しました: {str(e)}")

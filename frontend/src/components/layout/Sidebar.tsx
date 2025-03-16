@@ -44,7 +44,7 @@ interface MenuItem {
  */
 const MAIN_MENU_ITEMS: MenuItem[] = [
   { label: "ダッシュボード", icon: <DashboardIcon />, path: "/" },
-  { label: "注文管理", icon: <OrderIcon />, path: "/orders" },
+  { label: "注文管理", icon: <OrderIcon />, path: "/admin/orders" },
   { label: "商品管理", icon: <ProductIcon />, path: "/products" },
   { label: "取引先管理", icon: <CustomerIcon />, path: "/customers" },
   { label: "レポート", icon: <ReportIcon />, path: "/reports" },

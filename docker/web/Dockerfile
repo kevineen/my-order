@@ -2,11 +2,11 @@ FROM node:18-alpine AS deps
 
 WORKDIR /app
 
-# npmのキャッシュレイヤーを作成
-COPY package*.json ./
-RUN npm set progress=false && \
-    npm config set depth 0 && \
-    npm install --only=production
+# パッケージファイルをコピー
+COPY package*.json yarn.lock ./
+
+# 依存関係のインストール
+RUN yarn install --frozen-lockfile
 
 # 開発依存関係をインストール
 FROM node:18-alpine AS builder
@@ -15,4 +15,4 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # 開発モードで起動
-CMD ["npm", "run", "dev"] 
+CMD ["yarn", "dev"] 
