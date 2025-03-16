@@ -1,0 +1,23 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "alembic==1.12.1",
+    "fastapi==0.104.1",
+    "google-api-python-client>=2.164.0",
+    "minio==7.2.0",
+    "openpyxl==3.1.2",
+    "passlib[bcrypt]==1.7.4",
+    "protobuf>=6.30.1",
+    "psycopg2-binary==2.9.9",
+    "pydantic==2.5.2",
+    "pydantic-settings==2.1.0",
+    "python-dotenv==1.0.0",
+    "python-jose[cryptography]==3.3.0",
+    "python-multipart==0.0.6",
+    "sqlalchemy==2.0.23",
+    "uvicorn==0.24.0",
+]

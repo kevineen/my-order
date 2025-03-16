@@ -1,1 +1,1 @@
-from . import user, token, customer, item, order, inbound
+from . import user, token, customer, item, order

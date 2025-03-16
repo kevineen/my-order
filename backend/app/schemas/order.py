@@ -1,7 +1,7 @@
 from typing import List, Optional
 from datetime import datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from .customer import Customer
 from .item import Item
@@ -30,7 +30,7 @@ class OrderItemInDBBase(OrderItemBase):
     order_id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class OrderItem(OrderItemInDBBase):
@@ -42,24 +42,34 @@ class OrderItemWithItem(OrderItem):
 
 
 class OrderBase(BaseModel):
-    customer_id: int
-    order_number: Optional[str] = None
-    order_date: Optional[datetime] = None
-    delivery_date: Optional[datetime] = None
-    status: OrderStatus = OrderStatus.DRAFT
-    notes: Optional[str] = None
+    """注文の基本スキーマ"""
+    customer_id: int = Field(..., description="顧客ID")
+    item_id: int = Field(..., description="商品ID")
+    quantity: int = Field(..., gt=0, description="数量")
+    status: OrderStatus = Field(default=OrderStatus.PENDING, description="注文ステータス")
 
 
 class OrderCreate(OrderBase):
-    items: List[OrderItemCreate]
+    """注文作成用スキーマ"""
+    order_date: datetime = Field(default_factory=datetime.utcnow, description="注文日時")
 
 
 class OrderUpdate(BaseModel):
-    customer_id: Optional[int] = None
-    order_date: Optional[datetime] = None
-    delivery_date: Optional[datetime] = None
-    status: Optional[OrderStatus] = None
-    notes: Optional[str] = None
+    """注文更新用スキーマ"""
+    quantity: Optional[int] = Field(None, gt=0, description="数量")
+    status: Optional[OrderStatus] = Field(None, description="注文ステータス")
+
+
+class OrderResponse(OrderBase):
+    """注文レスポンス用スキーマ"""
+    id: int = Field(..., description="注文ID")
+    order_date: datetime = Field(..., description="注文日時")
+    created_at: datetime = Field(..., description="作成日時")
+    updated_at: datetime = Field(..., description="更新日時")
+
+    class Config:
+        """Pydantic設定"""
+        from_attributes = True
 
 
 class OrderInDBBase(OrderBase):
@@ -68,7 +78,7 @@ class OrderInDBBase(OrderBase):
     updated_at: Optional[datetime] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class Order(OrderInDBBase):

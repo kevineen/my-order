@@ -7,8 +7,8 @@ from pydantic import BaseModel, EmailStr
 class UserBase(BaseModel):
     username: str
     email: EmailStr
-    full_name: Optional[str] = None
-    is_active: bool = True
+    is_active: Optional[bool] = True
+    is_admin: Optional[bool] = False
 
 
 class UserCreate(UserBase):
@@ -16,10 +16,18 @@ class UserCreate(UserBase):
 
 
 class UserUpdate(BaseModel):
+    username: Optional[str] = None
     email: Optional[EmailStr] = None
-    full_name: Optional[str] = None
     password: Optional[str] = None
     is_active: Optional[bool] = None
+    is_admin: Optional[bool] = None
+
+
+class User(UserBase):
+    id: int
+
+    class Config:
+        from_attributes = True
 
 
 class UserInDBBase(UserBase):
@@ -28,11 +36,7 @@ class UserInDBBase(UserBase):
     updated_at: Optional[datetime] = None
 
     class Config:
-        orm_mode = True
-
-
-class User(UserInDBBase):
-    pass
+        from_attributes = True
 
 
 class UserInDB(UserInDBBase):
